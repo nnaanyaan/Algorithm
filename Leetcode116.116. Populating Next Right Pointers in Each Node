@@ -1,0 +1,19 @@
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        helper(root, new ArrayList(), 0);
+    }
+    public void helper(TreeLinkNode root, List<TreeLinkNode> list, int depth) {
+        if (root == null) {
+            return;
+        }
+        if (depth == list.size()) {
+            list.add(root);
+        } else {
+            TreeLinkNode pre = list.get(depth);
+            pre.next = root;
+            list.set(depth, root);
+        }
+        helper(root.left, list, depth + 1);
+        helper(root.right, list, depth + 1);
+    }
+}
