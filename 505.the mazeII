@@ -1,0 +1,29 @@
+public class Solution {
+    /**
+     * @param maze: the maze
+     * @param start: the start
+     * @param destination: the destination
+     * @return: the shortest distance for the ball to stop at the destination
+     */
+    public int shortestDistance(int[][] maze, int[] start, int[] destination) {
+        int M = maze.length, N = maze[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{start[0], start[1], 0});
+        int[][] res = new int[M][N];
+        for (int[] r : res) Arrays.fill(r, Integer.MAX_VALUE);
+        int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        while (!q.isEmpty()) {
+            int[] pop = q.poll();
+            for (int[] d : dir) {
+                int x = pop[0], y = pop[1], z = pop[2];
+                while (x + d[0] >= 0 && x + d[0] < M && y + d[1] >= 0 && y + d[1]< N && maze[x+d[0]][y+d[1]] == 0) {
+                    x += d[0]; y += d[1]; z++;
+                }
+                if (res[x][y] > z) {
+                    res[x][y] = z; q.add(new int[]{x, y, z});
+                }
+            }
+        }
+        return res[destination[0]][destination[1]] == Integer.MAX_VALUE ? -1 : res[destination[0]][destination[1]];
+    }
+}
