@@ -1,0 +1,32 @@
+public class Solution {
+    /**
+     * @param flights: the airline status from the city i to the city j
+     * @param days: days[i][j] represents the maximum days you could take vacation in the city i in the week j
+     * @return: the maximum vacation days you could take during K weeks
+     * Time complexity : O(KN^2)
+     */
+    public int maxVacationDays(int[][] flights, int[][] days) {
+        int N = flights.length, K = days[0].length;
+        int[][] dp = new int[N][K];
+        for (int i = 0; i < N; i++) {
+            dp[i][K-1] = days[i][K-1];
+        }
+        for (int week = K-2; week >= 0; week--) {
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (i == j || flights[i][j] == 1) {
+                        dp[i][week] = Math.max(dp[i][week],
+                        dp[j][week+1] + days[i][week]);
+                    }
+                }
+            }
+        }
+        int res = dp[0][0];
+        for (int i = 0; i < N; i++) {
+            if (flights[0][i] == 1) {
+                res = Math.max(res, dp[i][0]);
+            }
+        }
+        return res;
+    }
+}
