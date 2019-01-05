@@ -32,31 +32,20 @@ The lowest common ancestor is the node with largest depth which is the ancestor 
 Return null if LCA does not exist.
 ================================================================================================================================
 public class Solution {
-    private boolean findA;
-    private boolean findB;
+    public boolean findA; public boolean findB;
     public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode A, TreeNode B) {
-        if(root == null) return null;
-        TreeNode res = commonAncestor(root, A, B);
-        if(findA && findB) return res;
+        TreeNode res = helper(root, A, B);
+        if (findA && findB) return res;
         return null;
     }
-    private TreeNode commonAncestor(TreeNode root, TreeNode A, TreeNode B) {
-        if(root == null) return null;
-        if(root == A) {
-            findA = true;
-        }
-        if(root == B) {
-            findB = true;
-        }
-        TreeNode left = commonAncestor(root.left, A, B);
-        TreeNode right= commonAncestor(root.right,A, B);
-        
-        if(root == A || root == B){
-            return root;
-        }
-        if(left != null && right != null) {
-            return root;
-        }
+    private TreeNode helper(TreeNode root, TreeNode A, TreeNode B) {
+        if (root == null) return null;
+        if (root == A) findA = true;
+        if (root == B) findB = true;
+        TreeNode left = helper(root.left, A, B);
+        TreeNode right = helper(root.right, A, B);
+        if (root == A || root == B) return root;
+        if (left != null && right != null) return root;
         return (right == null) ? left : right;
     }
 }
