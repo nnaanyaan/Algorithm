@@ -1,0 +1,62 @@
+Problem 1.Given the root and two nodes in a Binary Tree. Find the lowest common ancestor(LCA) of the two nodes.
+The lowest common ancestor is the node with largest depth which is the ancestor of both nodes.
+The node has an extra attribute parent which point to the father of itself. The root's parent is null.
+================================================================================================================================
+public class Solution {
+    public ParentTreeNode lowestCommonAncestorII(ParentTreeNode root, ParentTreeNode A, ParentTreeNode B) {
+        HashSet<ParentTreeNode> set = new HashSet<>();
+        while (A != null) {
+            set.add(A); A = A.parent;
+        }
+        while (B != null) {
+            if (set.contains(B)) return B;
+            B = B.parent;
+        }
+        return null;
+    }
+}
+Problem 2.Given the root and two nodes in a Binary Tree. Find the lowest common ancestor(LCA) of the two nodes.
+The lowest common ancestor is the node with largest depth which is the ancestor of both nodes.
+================================================================================================================================
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode A, TreeNode B) {
+        if (root == null || root == A || root == B) return root;
+        TreeNode left = lowestCommonAncestor(root.left, A, B);
+        TreeNode right = lowestCommonAncestor(root.right, A, B);
+        if (left != null && right != null) return root;
+        if (left != null) return left;
+        if (right != null) return right;
+        return null;
+ }
+Problem 3.Given the root and two nodes in a Binary Tree. Find the lowest common ancestor(LCA) of the two nodes.
+The lowest common ancestor is the node with largest depth which is the ancestor of both nodes.
+Return null if LCA does not exist.
+================================================================================================================================
+public class Solution {
+    private boolean findA;
+    private boolean findB;
+    public TreeNode lowestCommonAncestor3(TreeNode root, TreeNode A, TreeNode B) {
+        if(root == null) return null;
+        TreeNode res = commonAncestor(root, A, B);
+        if(findA && findB) return res;
+        return null;
+    }
+    private TreeNode commonAncestor(TreeNode root, TreeNode A, TreeNode B) {
+        if(root == null) return null;
+        if(root == A) {
+            findA = true;
+        }
+        if(root == B) {
+            findB = true;
+        }
+        TreeNode left = commonAncestor(root.left, A, B);
+        TreeNode right= commonAncestor(root.right,A, B);
+        
+        if(root == A || root == B){
+            return root;
+        }
+        if(left != null && right != null) {
+            return root;
+        }
+        return (right == null) ? left : right;
+    }
+}
