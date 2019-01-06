@@ -1,0 +1,37 @@
+public class Solution {
+    public int[] withinThreeJumps(int[] a, int[] b, int[] c, int[] d) {
+        HashMap<Integer, HashSet<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < a.length; i++) {
+            graph.putIfAbsent(a[i], new HashSet<>());
+            graph.get(a[i]).add(b[i]);
+            graph.putIfAbsent(b[i], new HashSet<>());
+            graph.get(b[i]).add(a[i]);
+        }
+        int[] ans = new int[c.length];
+        for (int i = 0; i < c.length; i++) {
+            if (!graph.containsKey(c[i]) || !graph.containsKey(d[i])) ans[i] = 0;
+            else if (c[i] == d[i] || bfs(graph, c[i], d[i])) ans[i] = 1;
+            else ans[i] = 0;
+        }
+        return ans;
+    }
+    private boolean bfs(HashMap<Integer, HashSet<Integer>> graph, int start, int end) {
+        HashSet<Integer> visit = new HashSet<>();
+        Queue<Integer> q = new LinkedList<>();
+        q.add(start); visit.add(start); int level = 0;
+        while (!q.isEmpty()) {
+            level++;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int p = q.poll();
+                for (int adj : graph.get(p)) {
+                    if (adj == end) return true;
+                    if (visit.contains(adj)) continue;
+                    visit.add(adj); q.add(adj);
+                }
+            }
+            if (level == 3) break;
+        }
+        return false;
+    }
+}
