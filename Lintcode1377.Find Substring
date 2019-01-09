@@ -1,0 +1,12 @@
+public int findSubstring(String s, int k) {
+    boolean[] map = new boolean[128];
+    int slow = 0, fast = 0, N = s.length(); HashSet<String> res = new HashSet<>();
+    while (fast < N && slow < N) {
+        while (fast < N && !map[s.charAt(fast)] && fast - slow + 1 <= k) {
+            map[s.charAt(fast++)] = true;
+        }
+        if (fast - slow + 1 > k) res.add(s.substring(slow, fast));
+        map[s.charAt(slow++)] = false;
+    }
+    return res.size();
+}
