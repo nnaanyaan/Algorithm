@@ -1,0 +1,31 @@
+/*
+HashSet 维护一个字典。
+slow + fast 双指针；
+HashMap 维护当前sliding window里面的元素及其对应的个数，注意只有在hashSet中才count；
+当HashMap的size一直小于HashSet的size时候，fast不断向前；
+当相等时跳出while loop and use fast - slow， notice here！不要加1，因为在上一个while loop中 fast多跳了一个1
+之后slow往前走。
+时间复杂度为O（N）
+*/
+public int getMinimumStringArray(String[] tagList, String[] allTags) {
+        HashSet<String> tags = new HashSet<>(Arrays.asList(tagList));
+        HashMap<String, Integer> count = new HashMap<>();
+        int fast = 0, slow = 0; int N = allTags.length; int res = 10001;
+        while (fast < N && slow < N) {
+            while (fast < N && count.size() < tags.size()) {
+                if (tags.contains(allTags[fast])) {
+                    count.put(allTags[fast], count.getOrDefault(allTags[fast], 0) + 1);
+                }
+                fast++;
+            }
+            if (count.size() == tags.size()) {
+                res = Math.min(res, fast - slow);
+            }
+            if (count.containsKey(allTags[slow])) {
+                count.put(allTags[slow], count.get(allTags[slow]) - 1);
+                if (count.get(allTags[slow]) == 0) count.remove(allTags[slow]);
+            }
+            slow++;
+        }
+        return res == 10001 ? -1 : res;
+    }
