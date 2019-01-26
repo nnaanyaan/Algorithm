@@ -16,6 +16,7 @@ public class Solution {
         // loop to add the next & random information of copy node
         head = dummy.next;
         while (head != null) {
+        // 这里千万要注意，你不能next 和 random 指向原来的list的任何元素，必须指向values里面的所有元素。
             ranMap.get(head).next = ranMap.get(head.next);
             ranMap.get(head).random = ranMap.get(head.random);
             head = head.next;
