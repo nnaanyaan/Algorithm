@@ -1,0 +1,25 @@
+// Algorithm : HashMap key : current randomlistNode -> val : the copy randomlistNode
+// loop 1 : copy current list one by one, build new randomlistnode
+// loop 2 : set the next and random of copy node
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        if (head == null) return null;
+        // original random node -> copy random node
+        HashMap<RandomListNode, RandomListNode> ranMap = new HashMap<>();
+        // loop to deep copy one by one
+        RandomListNode dummy = new RandomListNode(0);
+        dummy.next = head;
+        while (head != null) {
+            ranMap.put(head, new RandomListNode(head.label));
+            head = head.next;
+        }
+        // loop to add the next & random information of copy node
+        head = dummy.next;
+        while (head != null) {
+            ranMap.get(head).next = ranMap.get(head.next);
+            ranMap.get(head).random = ranMap.get(head.random);
+            head = head.next;
+        }
+        return ranMap.get(dummy.next);
+    }
+}
