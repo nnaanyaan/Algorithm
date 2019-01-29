@@ -1,2 +1,10 @@
 574.
-select Candidate.Name from Candidate inner join (select Vote.CandidateId from Vote group by CandidateId order by count(*) desc limit 1) where Candidate.id = Vote.CandidateId;
+select Candidate.Name 
+from 
+Candidate inner join 
+(select Vote.CandidateId from Vote 
+group by CandidateId 
+order by count(*) desc 
+limit 1) 
+where 
+Candidate.id = Vote.CandidateId;
