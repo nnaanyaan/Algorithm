@@ -1,4 +1,4 @@
-574. Winning Candidate
+Leetcode 574. Winning Candidate
 select Candidate.Name 
 from 
 Candidate inner join 
@@ -8,11 +8,151 @@ order by count(*) desc
 limit 1) 
 where 
 Candidate.id = Vote.CandidateId;
+
+
 Leetcode 185. Department Top Three Salaries
 SELECT D.Name as Department, E.Name as Employee, E.Salary 
 FROM Department D, Employee E, Employee E2  
 WHERE D.ID = E.DepartmentId and E.DepartmentId = E2.DepartmentId and 
 E.Salary <= E2.Salary
-group by D.ID,E.Name having count(distinct E2.Salary) <= 3
+group by D.ID,E.Name 
+having count(distinct E2.Salary) <= 3
 order by D.Name, E.Salary desc
+
+Leetcode 178. Rank Scores
+select s1.Score, count(distinct s2.Score) as Rank
+from Scores as s1 inner join Scores as s2
+on s1.Score <= s2.Score
+group by s1.Id
+order by s1.Score desc
+
+Leetcode 608. Tree Node
+------------
+root/inner/leaf
+have no parant/others/have no children
+null/ other / not in p_id
+--------------
+SELECT id, IF(ISNULL(p_id), 'Root', IF(id IN (SELECT p_id FROM tree), 'Inner', 'Leaf')) AS Type 
+FROM tree ORDER BY id;
+
+
+leetcode 610. Triangel judgement
+
+
+leetcode 181. Employees Earning More Than Their Manager
+select e1.Name as Employee
+from Employee e1, Employee e2 
+where e1.ManagerId is not Null
+and e1.ManagerId = e2.Id 
+and e1.Salary > e2.Salary;
+
+leetcode 182. Duplicate Emails
+
+select Person.Email from 
+Person group by Email having count（*）>= 2 
+order by Id;
+Person group by Email having count（*）>= 2 order by Id;
+
+Leetcode 183. Customers who never order
+select Customers.Name from Customer where Customers.Id not in (Select Order.customerId from Order);
+
+
+Leetcode 196. Delete Duplicate Emails
+delete p1
+from Person p1, Person p2
+where p1.Email = p2.Email and p1.Id > p2.Id;
+
+Leetcode 571.Find Median Given Frequency of Numbers
+select Employee.name, Bonus.bonus 
+from Employee left join Bonus
+on Employee.empId = Bonus.empId
+where bonus < 1000 or bonus is null;
+
+Leetcode580. Count Student Number in Department
+select d.dept_name, count(s.student_id) as student_number
+from student s right join department d 
+on s.dept_id = d.dept_id 
+group by d.dept_name
+order by student_number desc, d.dept_name;
+
+------------------------------------
+Leetcode 584. Find Customer Referee
+select c.name 
+from customer c
+where c.referee_id <> 2 or referee_id is null;
+
+
+-------------------------------------------------
+Leetcode 586.Customer Placing the largest Number of Orders
+select customer_number from orders
+group by customer_number
+order by count(*) desc limit 1;
+
+Leetcode 596. Classes more than 5 students
+select class
+from courses group by class having count (distict student) >= 5;
+
+--------------------------------------------------------------
+Leetcode601. Human Traffic of Stadium
+select s1.* from stadium as s1, stadium as s2, stadium as s3
+where ( (s1.id + 1 = s2.id and s1.id + 2 = s3.id) or
+        (s1.id - 1 = s2.id and s1.id + 1 = s3.id) or
+        (s1.id - 2 = s2.id and s1.id - 1 = s3.id)
+      )
+      and s1.people >= 100 and s2.people >= 100 and s3.people >= 100
+group by s1.id;
+-----------------------------------------------------------------
+Leetcode602. Friend RequestsII. who has the most friends
+select requester_id as id, count(distinct accepter_id) as num
+from request_accepted as r1 join request_accepted as r2 
+on r1.requester_id  = r2.requester_id or r1.requester_id = r2.accepter_id
+group by id, num desc limit 1;
+
+
+---------------------------------------------------------------------
+Leetcode 607. Sales Person
+select salesperson.name
+from orders o join company c 
+on (o.com_id = c.com_id and c.name = 'Red')
+right join salesperson on salesperson.sales_id = o.sales_id
+where o.sales_id is null;
+
+--------------------------------------------------------------------
+Leetcode 612. Shortest Distance in a Plane
+select round(sqrt(min(pow(a.x-b.x, 2) + pow(a.y - b.y), 2))) as shortest
+from point_2d a, point_2d b
+where (a.x, a.y) != (b.x, b.y);
+
+--------------------------------------------------------------------------
+Leetcode 613. Shortest Distance in a line
+select round(min (abs(a.x - b.x))) as shortest
+from point a, point b
+where a.x <> b.x;
+
+---------------------------------------------------------------------------
+
+Leetcode 614. Second Degree Follower
+
+select f1.follower, count(distinct f2.follwer) as num
+from follower f1 join follower f2
+on f1.follower = f2.followee 
+group by f1.follower , num desc;
+
+----------------------------------------------------------------------------
+Leetcode 618. 遇到这种需要完全的重命名，需要设计一个新的表的问题应该怎么做？
+----------------------------------------------------------------------------
+Leetcode 619. Biggest Single Number
+
+select (
+  select num from number group by num having count(*) > 1 order by num Desc limit 1
+)as num
+
+-------------------------------------------------------------------------------
+Leetcode 620. Not boring movies
+select (*) 
+from cinema where cinema.description <> 'boring' and (id % 2 = 1)
+order by rating desc
+
+---------------------------------------------------------------------------------
+Leetcode 627.Swap Salary
 
